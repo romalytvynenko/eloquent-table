@@ -1,0 +1,23 @@
+{
+    "name": "romalytvynenko/eloquent-table",
+    "description": "",
+    "authors": [
+        {
+            "name": "Roman Lytvynenko",
+            "email": "litvinenko95@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Romalytvynenko\\EloquentTable\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
