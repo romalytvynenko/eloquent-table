@@ -206,7 +206,7 @@ class EloquentTable
      */
     public function getCurrentRoute()
     {
-        return '/' . \Route::getCurrentRoute()->getPath();
+        return '/' . \Request::path();
     }
 
     /**
