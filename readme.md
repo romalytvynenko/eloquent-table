@@ -20,17 +20,28 @@ First of all, cerate EloquentTable object.
 $exampleTable = new EloquentTable('Example', $tableSettings);
 ```
 Where first parameter is model name, and $tableSettings is special table settings used for current table.
+You could also provide some specific params, such as 'searchable' and 'preGet'. Where 'searchable' is array of columns which will be searchable (what a twist!), and 'preGet' is closure that will applied to query before all other filters (search, sort, etc.)
 ```php
 $tableSettings = [
     'columns' => [
         'id' => '#',
+        'title' => 'Title',
         'message' => 'Message',
         'sent_at' => 'Sent',
     ],
     'sortable' => [
         'id',
         'sent_at'
-    ]
+    ],
+    'searchable' => [
+        'title'
+    ],
+    'preGet' => function($query) {
+        /**
+        * @var $query \Illuminate\Database\Query\Builder
+        */
+        return $query->where('type', 'group');
+    },
 ];
 ```
 And now you could render table using `show` method:

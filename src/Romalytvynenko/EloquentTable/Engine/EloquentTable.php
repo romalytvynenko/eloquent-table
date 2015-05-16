@@ -100,13 +100,29 @@ class EloquentTable
          * @var $class \Eloquent
          */
         $class = $this->model;
+        $query = $this->preGet($class::getQuery());
 
-        $this->configs['allItemsCount'] = $this->processSearch($class::getQuery(), 'count');
+        $this->configs['allItemsCount'] = $this->processSearch($query, 'count');
 
-        $this->data = $this->processSearch($class::orderBy($column, $order)
+        $this->data = $this->processSearch($query->orderBy($column, $order)
             ->skip($this->getPage() * $items)
             ->take($items)
         );
+    }
+
+    /**
+     * @param $query \Illuminate\Database\Query\Builder
+     * @return mixed
+     */
+    private function preGet($query) {
+        $closure = $this->getConfig('preGet');
+
+        if(is_callable($closure)) {
+            $closure = $this->getConfig('preGet');
+            $query = call_user_func($closure, $query);
+        }
+
+        return $query;
     }
 
     /**
@@ -122,9 +138,11 @@ class EloquentTable
         if(!in_array($action, $allowed)) throw new MethodNotAllowedHttpException($allowed);
 
         if($this->getSearchKeyword() && count($this->getConfig('searchable'))) {
-            foreach($this->getConfig('searchable') as $field) {
-                $query = $query->orWhere($field, 'LIKE', '%' . $this->getSearchKeyword() . '%');
-            }
+            $query = $query->where(function($query) {
+                foreach($this->getConfig('searchable') as $field) {
+                    $query = $query->orWhere($field, 'LIKE', '%' . $this->getSearchKeyword() . '%');
+                }
+            });
         }
 
         return $query->$action();
@@ -135,6 +153,10 @@ class EloquentTable
         $this->configs = array_merge($this->configs, $args);
     }
 
+    /**
+     * @param $key
+     * @return mixed|null
+     */
     public function getConfig($key)
     {
         return array_key_exists($key, $this->configs)? $this->configs[$key] : null;
