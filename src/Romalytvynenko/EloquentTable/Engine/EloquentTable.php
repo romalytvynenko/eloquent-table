@@ -173,6 +173,16 @@ class EloquentTable
     }
 
     /**
+     * Remove column from table
+     *
+     * @param $column
+     */
+    public function removeColumn($column) {
+        unset($this->hooks[$column]);
+        unset($this->configs['columns'][$column]);
+    }
+
+    /**
      * Output item value using hooks
      * @param $item
      * @param $key
@@ -206,7 +216,7 @@ class EloquentTable
      */
     public function getCurrentRoute()
     {
-        return '/' . \Request::path();
+            return '/' . \Request::path();
     }
 
     /**
