@@ -18,8 +18,7 @@ class EloquentTableServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('romalytvynenko/eloquent-table');
-        \View::addNamespace('romalytvynenko/eloquent-table', dirname(__FILE__) . '/../../views');
+		$this->loadViewsFrom(dirname(__FILE__) . '/../../views', 'romalytvynenko/eloquent-table');
 	}
 
 	/**

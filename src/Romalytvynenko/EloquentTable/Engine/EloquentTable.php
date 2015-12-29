@@ -1,6 +1,7 @@
 <?php
 namespace Romalytvynenko\EloquentTable\Engine;
 
+use Illuminate\Support\Facades\Input;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class EloquentTable
@@ -25,6 +26,9 @@ class EloquentTable
         'orderBy' => 'id',
         'order'   => 'desc',
         'itemsPerPage' => 10,
+        'columns' => [
+            'id' => '#'
+        ],
         'sortable' => [
             'id'
         ]
@@ -51,7 +55,7 @@ class EloquentTable
      */
     public function getPage()
     {
-        return \Input::has('page')? intval(\Input::get('page')) : 0;
+        return Input::has('page')? intval(Input::get('page')) : 0;
     }
 
     /**
@@ -60,7 +64,7 @@ class EloquentTable
      */
     public function getItemsPerPage()
     {
-        return \Input::has('itemsPerPage')? intval(\Input::get('itemsPerPage')) : $this->getConfig('itemsPerPage');
+        return Input::has('itemsPerPage')? intval(Input::get('itemsPerPage')) : $this->getConfig('itemsPerPage');
     }
 
     /**
@@ -69,7 +73,7 @@ class EloquentTable
      */
     public function getSearchKeyword()
     {
-        return \Input::has('search')? \Input::get('search') : null;
+        return Input::has('search')? Input::get('search') : null;
     }
 
     /**
@@ -78,7 +82,7 @@ class EloquentTable
      */
     public function getOrderDirection()
     {
-        return \Input::has('order')? \Input::get('order') : $this->getConfig('order');
+        return Input::has('order')? Input::get('order') : $this->getConfig('order');
     }
 
     /**
@@ -87,7 +91,7 @@ class EloquentTable
      */
     public function getOrderBy()
     {
-        return \Input::has('column')? \Input::get('column') : $this->getConfig('orderBy');
+        return Input::has('column')? Input::get('column') : $this->getConfig('orderBy');
     }
 
     public function prepareData()
@@ -253,7 +257,7 @@ class EloquentTable
      */
     public function getActionLink($action = [])
     {
-        $data = array_merge(\Input::all(), $action);
+        $data = array_merge(Input::all(), $action);
 
         $postfix = [];
         foreach($data as $key => $value) {
