@@ -104,7 +104,7 @@ class EloquentTable
          * @var $class \Eloquent
          */
         $class = $this->model;
-        $query = $this->preGet($class::getQuery());
+        $query = $this->preGet($class::query());
 
         $this->configs['allItemsCount'] = $this->processSearch($query, 'count');
 
@@ -220,7 +220,7 @@ class EloquentTable
      */
     public function getCurrentRoute()
     {
-            return '/' . \Request::path();
+        return '/' . \Request::path();
     }
 
     /**
