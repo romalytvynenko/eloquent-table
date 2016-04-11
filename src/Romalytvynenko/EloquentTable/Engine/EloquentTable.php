@@ -31,7 +31,8 @@ class EloquentTable
         ],
         'sortable' => [
             'id'
-        ]
+        ],
+        'permanentParams' => []
     ];
 
     /**
@@ -56,6 +57,15 @@ class EloquentTable
     public function getPage()
     {
         return Input::has('page')? intval(Input::get('page')) : 0;
+    }
+
+    /**
+     * Get table data (all filter applied)
+     * @return int
+     */
+    public function getData()
+    {
+        return $this->data;
     }
 
     /**
