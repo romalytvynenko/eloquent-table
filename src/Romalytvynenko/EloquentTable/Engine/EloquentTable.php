@@ -46,8 +46,18 @@ class EloquentTable
         // Fetch configs
         $this->makeConfigs($args);
 
-        // Prepare data (ordering, paging, etc)
+        if(count($args)) {
+            // Prepare data (ordering, paging, etc)
+            $this->prepareData();
+        }
+    }
+
+    public function columns(array $columns)
+    {
+        $this->makeConfigs(['columns' => $columns]);
         $this->prepareData();
+
+        return $this;
     }
 
     /**
@@ -165,6 +175,24 @@ class EloquentTable
     public function makeConfigs($args)
     {
         $this->configs = array_merge($this->configs, $args);
+
+        if(is_array($this->getConfig('columns'))) {
+            foreach($this->configs['columns'] as $column => &$value) {
+                if(is_array($value)
+                    && array_key_exists('value', $value)
+                    && is_callable($value['value'])
+                ) {
+                    $this->columnOutput($column, $value['value']);
+
+                    if(isset($value['title'])) {
+                        $value = $value['title'];
+                    }
+                    else {
+                        $value = ucfirst($column);
+                    }
+                }
+            }
+        }
     }
 
     /**
