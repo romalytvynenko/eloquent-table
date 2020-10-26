@@ -1,7 +1,6 @@
 <?php
 namespace Romalytvynenko\EloquentTable\Engine;
 
-use Illuminate\Support\Facades\Input;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class EloquentTable
@@ -66,7 +65,7 @@ class EloquentTable
      */
     public function getPage()
     {
-        return Input::has('page')? intval(Input::get('page')) : 0;
+        return request()->has('page')? intval(request()->get('page')) : 0;
     }
 
     /**
@@ -84,7 +83,7 @@ class EloquentTable
      */
     public function getItemsPerPage()
     {
-        return Input::has('itemsPerPage')? intval(Input::get('itemsPerPage')) : $this->getConfig('itemsPerPage');
+        return request()->has('itemsPerPage')? intval(request()->get('itemsPerPage')) : $this->getConfig('itemsPerPage');
     }
 
     /**
@@ -93,7 +92,7 @@ class EloquentTable
      */
     public function getSearchKeyword()
     {
-        return Input::has('search')? Input::get('search') : null;
+        return request()->has('search')? request()->get('search') : null;
     }
 
     /**
@@ -102,7 +101,7 @@ class EloquentTable
      */
     public function getOrderDirection()
     {
-        return Input::has('order')? Input::get('order') : $this->getConfig('order');
+        return request()->has('order')? request()->get('order') : $this->getConfig('order');
     }
 
     /**
@@ -111,7 +110,7 @@ class EloquentTable
      */
     public function getOrderBy()
     {
-        return Input::has('column')? Input::get('column') : $this->getConfig('orderBy');
+        return request()->has('column')? request()->get('column') : $this->getConfig('orderBy');
     }
 
     public function prepareData()
@@ -295,7 +294,7 @@ class EloquentTable
      */
     public function getActionLink($action = [])
     {
-        $data = array_merge(Input::all(), $action);
+        $data = array_merge(request()->all(), $action);
 
         $postfix = [];
         foreach($data as $key => $value) {
